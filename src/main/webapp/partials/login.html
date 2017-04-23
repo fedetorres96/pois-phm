@@ -1,0 +1,32 @@
+<!-- Vista de Login -->
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="well well-lg">
+            <form class="form-horizontal">
+                <fieldset>
+                    <!-- Panel de Error -->
+                    <div class="alert alert-danger" ng-show="login.errorMessage">
+                     <span class="fa fa-exclamation-circle"></span>
+                       {{login.errorMessage}}
+                    </div>
+                    <!-- Campo - Usuario -->
+                    <div class="form-group">
+                        <label for="usuario" class="col-lg-2 control-label">Usuario</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" placeholder="Usuario" ng-model="login.textoNombre" id="usuario">
+                        </div>
+                    </div>
+                    <!-- Campo - Contraseña -->
+                    <div class="form-group ">
+                        <label for="password" class="col-lg-2 control-label ">Contraseña</label>
+                        <div class="col-lg-10 ">
+                            <input type="password" class="form-control" placeholder="Contraseña" ng-model="login.textoContrasenia" id="password">
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- Boton - Entrar -->
+                <button class="btn btn-primary btn-block" type="submit" ng-click="login.logIn() ">Entrar</button>
+            </form>
+        </div>
+    </div>
+</div>

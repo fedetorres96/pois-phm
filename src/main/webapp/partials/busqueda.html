@@ -1,0 +1,43 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form>
+            <div class="input-group">
+                <!-- Texto de Busqueda  -->
+                <input ng-model="busqueda.textoBusqueda" type="text" class="form-control" placeholder="¿Qué está buscando?">
+                <!-- Boton - Buscar  -->
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="submit" ng-click="busqueda.buscar()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Tabla de Resultados -->
+<div class="panel panel-primary" >
+    <div class="panel-body">
+        <table class="table table-hover table-responsive" ng-show="busqueda.pois.length > 0">
+            <thead>
+                <tr>
+                    <th class="col-xs-3"><span class="glyphicon glyphicon-menu-hamburger"></span> Nombre</th>
+                    <th class="col-xs-3"><span class="glyphicon glyphicon-home"></span> Domicilio</th>
+                    <th class="col-xs-2"><span class="glyphicon glyphicon-star"></span> ¿Favorito?</th>
+                    <th class="col-xs-2"><span class="fa fa-location-arrow"></span> ¿Cerca?</th>
+                    <th class="col-xs-2"><span class="glyphicon glyphicon-time"></span> ¿Disponible?</th>
+                </tr>
+            </thead>
+            <!-- Resultados de Busqueda -->
+            <tbody>
+                <tr ng-repeat="poi in busqueda.pois" class="active clickable" ui-sref="main.detalle.{{poi.tipo}}({id: poi.id})">
+                    <td>{{poi.nombre}}</td>
+                    <td>{{poi.domicilio}}</td>
+                    <td>{{busqueda.usuario.esFavorito(poi) | siNo }}</td>
+                    <td>{{poi.estaCerca(busqueda.usuario.ubicacion) | siNo }}</td>
+                    <td>{{poi.estaDisponible() | siNo }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <span ng-show="busqueda.pois.length == 0">Sin resultados</span>
+    </div>
+</div>

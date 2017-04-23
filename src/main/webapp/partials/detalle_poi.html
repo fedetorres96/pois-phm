@@ -1,0 +1,68 @@
+<!-- Vista de Detalle -->
+<div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{detalle.poi.nombre}}</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-target="#detalle" data-toggle="tab" aria-expanded="true">Detalle</a></li>
+                <li><a data-target="#opinion" data-toggle="tab" aria-expanded="false">Opiniones</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="detalle">
+                    <br>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">Descripción:</label>
+                            <div class=" col-xs-9 input-group">
+                                <textarea class="form-control" rows="2" ng-disabled="!detalle.editar" ng-model="detalle.poi.descripcion " style="overflow:auto;resize:none">
+                                </textarea>
+                                <span class="input-group-addon">
+                                <button class="btn btn-default" ng-click="detalle.changeEditar()">
+                                    <span class="fa" ng-class="{'fa-pencil': !detalle.editar, 'fa-check': detalle.editar }"></span> Editar
+                                </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">Distancia:</label>
+                            <div class="col-xs-10">
+                                <p class="form-control-static">{{detalle.poi.distancia(detalle.usuario.ubicacion)}} cuadras</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">Calificación:</label>
+                            <div class="col-xs-10">
+                                <p class="form-control-static">{{detalle.poi.calificacion}}</p>
+                            </div>
+                        </div>
+                        <div ui-view="tipo-poi"></div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="opinion">
+                    <br>
+                    <div ui-view="opiniones"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-default" ui-sref="main.busqueda">
+                <span class="fa fa-arrow-left"></span> Volver
+            </button>
+            <button class="btn btn-default" ng-click="detalle.changeFavorito()">
+                <span class="fa" 
+                ng-class="{'fa-star': detalle.usuario.esFavorito(detalle.poi),
+                           'fa-star-o': !detalle.usuario.esFavorito(detalle.poi) }"> 
+                </span> Favorito
+            </button>
+            <button class="btn btn-default" ng-disabled="detalle.poi.yaOpino(detalle.usuario)" data-toggle="modal" data-target="#modal">
+                <span class="fa fa-comment"></span> Opinar
+            </button>
+            <button class="btn btn-default" ng-disabled="!detalle.poi.habilitado" ng-click="detalle.inhabilitar()"">
+                <span class="fa fa-thumbs-down"></span> Inhabilitar
+            </button>
+            <div ui-view="opinion"></div>
+        </div>
+    </div>
+</div>
