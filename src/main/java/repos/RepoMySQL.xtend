@@ -10,7 +10,6 @@ import poi.Banco
 import poi.CGP
 import poi.Colectivo
 import poi.Local
-import poi.Opinion
 import poi.POI
 import poi.Rubro
 import poi.Usuario
@@ -18,7 +17,7 @@ import poi.utils.Punto
 import poi.utils.RangoHorario
 import poi.utils.Servicio
 
-abstract class RepoGeneral<T> {
+abstract class RepoMySQL<T> {
 
 	private static final SessionFactory sessionFactory = new Configuration()
 		.configure()
@@ -31,12 +30,11 @@ abstract class RepoGeneral<T> {
 		.addAnnotatedClass(Colectivo)
 		.addAnnotatedClass(Local)
 		.addAnnotatedClass(Usuario)
-		.addAnnotatedClass(Opinion)
 		.addAnnotatedClass(RangoHorario)
 		.buildSessionFactory()
 
 	def List<T> allInstances() {
-		val session = sessionFactory.openSession
+		val session = openSession
 		try {
 			
 			session.createCriteria(getEntityType).list()
@@ -87,7 +85,7 @@ abstract class RepoGeneral<T> {
 		}
 	}
 	
-	def abstract Class<T> getEntityType()
+	def Class<T> getEntityType()
 
 	def Session openSession() {
 		sessionFactory.openSession

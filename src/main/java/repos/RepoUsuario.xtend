@@ -3,7 +3,7 @@ package repos
 import creacionales.UsuarioBuilder
 import poi.Usuario
 
-class RepoUsuario extends RepoGeneral<Usuario> {
+class RepoUsuario extends RepoMySQL<Usuario> {
 
 	static RepoUsuario instance
 
@@ -15,7 +15,7 @@ class RepoUsuario extends RepoGeneral<Usuario> {
 	}
 
 	override getEntityType() {
-		typeof(Usuario)
+		Usuario
 	}
 
 	def void cargaInicial() {

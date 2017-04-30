@@ -7,10 +7,10 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Inheritance
-import javax.persistence.OneToMany
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.joda.time.DateTime
 import poi.utils.Punto
+import repos.RepoOpinion
 
 @Accessors
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -30,9 +30,6 @@ abstract class POI {
 	
 	@Column
 	boolean habilitado
-	
-	@OneToMany(fetch=EAGER, cascade=ALL)
-	List<Opinion> listaOpiniones = newArrayList
 
 	def boolean estaCerca(Punto coordenada)
 
@@ -50,14 +47,15 @@ abstract class POI {
 		class.name.replace("poi.", "")
 	}
 	
+	def List<Opinion> getListaOpiniones() {
+		RepoOpinion.instance.getOpiniones(this)
+	}
+	
 	def double getCalificacion(){
 		val divisor = if (listaOpiniones.size > 0) listaOpiniones.size else 1
 		val promedio = listaOpiniones.fold(0.0)[ acum, o | acum + o.calificacion ] / divisor
 		Math.round(promedio * 100.0) / 100.0
 	}
 	
-	def void addOpinion(Opinion opinion){
-		listaOpiniones.add(opinion)
-	}
 
 }

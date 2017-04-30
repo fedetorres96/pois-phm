@@ -10,6 +10,7 @@ import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.http.ContentType
 import org.uqbar.xtrest.json.JSONUtils
 import poi.Opinion
+import repos.RepoOpinion
 import repos.RepoPOI
 import repos.RepoUsuario
 
@@ -17,19 +18,24 @@ import repos.RepoUsuario
 class POIController {
 	extension JSONUtils = new JSONUtils
 
+	static RepoPOI pois = RepoPOI.instance
+	static RepoUsuario usuarios = RepoUsuario.instance
+	static RepoOpinion opiniones = RepoOpinion.instance
+
 	@Post("/favorito/:idPoi/:idUsuario")
 	def Result postFavorito() {
-		val usuario = RepoUsuario.instance.searchById(Long::parseLong(idUsuario))
+		val usuario = usuarios.searchById(Long::parseLong(idUsuario))
+
 		try {
-			val poi = RepoPOI.instance.searchById(Long::parseLong(idPoi))
+			val poi = pois.searchById(Long::parseLong(idPoi))
 
 			if (usuario.esFavorito(poi))
 				usuario.removeFavorito(poi)
 			else
 				usuario.addFavorito(poi)
-			
-			RepoUsuario.instance.saveOrUpdate( usuario )
-			
+
+			usuarios.saveOrUpdate(usuario)
+
 		} catch (Exception e) {
 			badRequest(e.message)
 		}
@@ -39,10 +45,13 @@ class POIController {
 	@Put("/opinion/:id")
 	def Result putOpinion(@Body String body) {
 		try {
-			val poi = RepoPOI.instance.searchById(Long::parseLong(id))
+			val poi = pois.searchById(Long::parseLong(id))
 			val opinion = body.fromJson(Opinion)
-			poi.addOpinion(opinion)
-			RepoPOI.instance.saveOrUpdate(poi)
+
+			opinion.poi = poi.nombre
+
+			opiniones.save(opinion)
+
 		} catch (Exception e) {
 			return badRequest(e.toJson)
 		}
@@ -51,50 +60,50 @@ class POIController {
 
 	@Get("/usuarios")
 	def Result getUsuarios() {
-		val usuarios = RepoUsuario.instance.allInstances
+		val usuarios = usuarios.allInstances
 		response.contentType = ContentType.APPLICATION_JSON
 		ok(usuarios.toJson)
 	}
 
 	@Get("/usuario/:id")
 	def Result getUsuario() {
-		val usuario = RepoUsuario.instance.searchById(Long::parseLong(id))
-		response.contentType = ContentType.APPLICATION_JSON
+		val usuario = usuarios.searchById(Long::parseLong(id))
 		ok(usuario.toJson)
 	}
 
 	@Get("/pois")
 	def Result getPois(String query) {
-		val pois = RepoPOI.instance.searchByQuery(query)
-		response.contentType = ContentType.APPLICATION_JSON
+		val pois = pois.searchByQuery(query)
 		ok(pois.toJson)
 	}
 
 	@Get("/poi")
 	def Result getPoi(String id) {
-		val poi = RepoPOI.instance.searchById(Long::parseLong(id))
-		response.contentType = ContentType.APPLICATION_JSON
+		val poi = pois.searchById(Long::parseLong(id))
 		ok(poi.toJson)
 	}
 
 	@Get("/poi/inhabilitar/:id")
 	def Result inhabilitarPoi() {
 		try {
-			val poi = RepoPOI.instance.searchById(Long::parseLong(id))
+
+			val poi = pois.searchById(Long::parseLong(id))
 			poi.habilitado = false
-			RepoPOI.instance.saveOrUpdate(poi)
+			pois.saveOrUpdate(poi)
 		} catch (Exception e) {
 			badRequest(e.message)
 		}
 		ok
 	}
-	
+
 	@Get("/poi/descripcion/:id")
 	def Result descripcionPoi(String descripcion) {
 		try {
-			val poi = RepoPOI.instance.searchById(Long::parseLong(id))
+			val poi = pois.searchById(Long::parseLong(id))
+
 			poi.descripcion = descripcion
-			RepoPOI.instance.saveOrUpdate(poi)
+
+			pois.saveOrUpdate(poi)
 		} catch (Exception e) {
 			badRequest(e.message)
 		}
@@ -102,8 +111,28 @@ class POIController {
 	}
 
 	def static void main(String[] args) {
-		RepoPOI.instance.cargaInicial
-		RepoUsuario.instance.cargaInicial
+		if (pois.allInstances.nullOrEmpty) {
+			pois.cargaInicial
+		}
+
+		if (usuarios.allInstances.nullOrEmpty) {
+			usuarios.cargaInicial
+		}
+
+		if (opiniones.allInstances.nullOrEmpty) {
+			val usuarioTest = usuarios.allInstances.get(0)
+			val poiTest = pois.allInstances.get(0)
+
+			val opinion = new Opinion => [
+				calificacion = 5
+				comentario = "Mapea bien a MongoDB"
+				usuario = usuarioTest.nombre
+				poi = poiTest.nombre
+			]
+
+			opiniones.save(opinion)
+		}
+
 		XTRest.start(POIController, 9000)
 	}
 }

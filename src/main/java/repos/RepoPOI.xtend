@@ -5,7 +5,7 @@ import creacionales.ServicioBuilder
 import poi.POI
 import poi.Rubro
 
-class RepoPOI extends RepoGeneral<POI> {
+class RepoPOI extends RepoMySQL<POI> {
 
 	static RepoPOI instance
 
@@ -17,7 +17,7 @@ class RepoPOI extends RepoGeneral<POI> {
 	}
 
 	override getEntityType() {
-		typeof(POI)
+		POI
 	}
 
 	def searchByQuery(String query) {

@@ -1,31 +1,23 @@
 package poi
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import org.bson.types.ObjectId
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.mongodb.morphia.annotations.Entity
+import org.mongodb.morphia.annotations.Id
 
 @JsonIgnoreProperties(ignoreUnknown=true)
+@Entity(noClassnameStored=true)
 @Accessors
-@Entity
 class Opinion {
-	
 	@Id
-	@GeneratedValue
-	private Long id
+	ObjectId id
 	
-	@Column(name="calificacion")
 	int calificacion
 	
-	@Column(length=255)
 	String comentario
 	
-	@Column(length=150)
 	String usuario
 	
-	new() {
-		
-	}
+	String poi
 }
