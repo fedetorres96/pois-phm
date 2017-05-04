@@ -1,0 +1,15 @@
+// REVIEWS 
+_________________________________________________________________________
+// Query Punto 1
+
+var calificacionesHechas = function() {
+           emit(this.poi, this.calificacion)
+};
+
+var promedioCalificacion = function(poi, calificacion) {
+		return { promedio: Array.avg(calificacion) };
+};
+
+db.Opinion.mapReduce(calificacionesHechas ,promedioCalificacion, { out: "Promedio" });
+__________________________________________________________________________
+// Query Punto 2 
