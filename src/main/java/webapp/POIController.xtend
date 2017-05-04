@@ -50,7 +50,7 @@ class POIController {
 
 			opinion.poi = poi.nombre
 
-			opiniones.save(opinion)
+			opiniones.create(opinion)
 
 		} catch (Exception e) {
 			return badRequest(e.toJson)
@@ -130,7 +130,7 @@ class POIController {
 				poi = poiTest.nombre
 			]
 
-			opiniones.save(opinion)
+			opiniones.create(opinion)
 		}
 
 		XTRest.start(POIController, 9000)
