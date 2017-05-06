@@ -1,3 +1,5 @@
+package repos.mysql
+
 import creacionales.POIBuilder
 import org.junit.Assert
 import org.junit.Before
@@ -5,9 +7,9 @@ import org.junit.Test
 import poi.Colectivo
 import poi.Local
 import poi.Opinion
-import repos.RepoPOI
+import repos.mysql.RepoPOI
 
-class TestRepositorioPOI {
+class TestRepoPOI {
 	RepoPOI repoPoi
 	Opinion opinion;
 	Opinion badOpinion;
@@ -69,26 +71,6 @@ class TestRepositorioPOI {
 				
 	}
 	
-	/* TODO: Hacerlo para MongoDB
-	@Test
-	def void opinionAgregadaOk(){
-		repoPoi.saveOrUpdate(linea2)
-	
-		var colectivo = repoPoi.searchById(linea2.id)
-		
-		Assert.assertEquals(0, colectivo.listaOpiniones.size)
-		
-		colectivo.addOpinion(opinion)
-		
-		repoPoi.saveOrUpdate(colectivo)
-		
-		colectivo = repoPoi.searchById(linea2.id)
-		
-		Assert.assertEquals(1, colectivo.listaOpiniones.size)
-		
-		repoPoi.DeleteById(linea2.id)
-	}*/
-	
 	@Test
 	def void poiDadoDeBajaOK(){
 		repoPoi.saveOrUpdate(trigoDeOro)
@@ -144,7 +126,26 @@ class TestRepositorioPOI {
 		repoPoi.DeleteById(trigoDeOro.id)
 	}
 	
-	/* TODO: Hacerlo para MongoDB
+	/* 
+	@Test
+	def void opinionAgregadaOk(){
+		repoPoi.saveOrUpdate(linea2)
+	
+		var colectivo = repoPoi.searchById(linea2.id)
+		
+		Assert.assertEquals(0, colectivo.listaOpiniones.size)
+		
+		colectivo.addOpinion(opinion)
+		
+		repoPoi.saveOrUpdate(colectivo)
+		
+		colectivo = repoPoi.searchById(linea2.id)
+		
+		Assert.assertEquals(1, colectivo.listaOpiniones.size)
+		
+		repoPoi.DeleteById(linea2.id)
+	}
+	
 	@Test(expected=HibernateException)
 	def void opinionconCalificacionMayorA5NoSeAgrega(){
 		trigoDeOro.addOpinion(badOpinion)
@@ -157,5 +158,6 @@ class TestRepositorioPOI {
 		trigoDeOro.addOpinion(badOpinion1)
 		
 		repoPoi.saveOrUpdate(trigoDeOro)
-	}*/
+	}
+	*/
 }

@@ -1,3 +1,5 @@
+package repos.mysql
+
 import creacionales.POIBuilder
 import creacionales.ServicioBuilder
 import creacionales.UsuarioBuilder
@@ -10,9 +12,9 @@ import poi.Colectivo
 import poi.Local
 import poi.Rubro
 import poi.Usuario
-import repos.RepoUsuario
+import repos.mysql.RepoUsuario
 
-class TestRepositorioUsuario {
+class TestRepoUsuario {
 	RepoUsuario repoUsuario
 	Usuario usuario
 	

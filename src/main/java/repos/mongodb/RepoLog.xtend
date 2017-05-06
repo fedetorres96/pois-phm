@@ -1,7 +1,7 @@
-package repos
+package repos.mongodb
 
-import poi.Log
 import java.util.List
+import poi.Log
 
 class RepoLog extends RepoMongoDB<Log> {
 	
@@ -20,14 +20,6 @@ class RepoLog extends RepoMongoDB<Log> {
 	
 	def List<Log> getLogs(Log l) {
 		ds.createQuery(entityType).field("l").equal(l.usuario).asList
-	}
-
-	override searchByExample(Log t) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override defineUpdateOperations(Log t) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 }

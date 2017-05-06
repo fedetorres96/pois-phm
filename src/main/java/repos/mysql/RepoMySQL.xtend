@@ -1,4 +1,4 @@
-package repos
+package repos.mysql
 
 import java.util.List
 import org.hibernate.HibernateException

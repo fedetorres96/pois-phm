@@ -1,31 +1,28 @@
 package webapp
 
 import org.uqbar.xtrest.api.Result
-import org.uqbar.xtrest.api.XTRest
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.api.annotation.Post
 import org.uqbar.xtrest.api.annotation.Put
-import org.uqbar.xtrest.http.ContentType
 import org.uqbar.xtrest.json.JSONUtils
 import poi.Opinion
-import repos.RepoOpinion
-import repos.RepoPOI
-import repos.RepoUsuario
-import repos.RepoLog
-import poi.Log
+import repos.mongodb.RepoLog
+import repos.mongodb.RepoOpinion
+import repos.mysql.RepoPOI
+import repos.mysql.RepoUsuario
 
 @Controller
 class POIController {
-	
+
 	extension JSONUtils = new JSONUtils
 
-	static RepoPOI pois = RepoPOI.instance
-	static RepoUsuario usuarios = RepoUsuario.instance
-	static RepoOpinion opiniones = RepoOpinion.instance
-	static RepoLog log = RepoLog.instance
-	
+	RepoPOI pois = RepoPOI.instance
+	RepoUsuario usuarios = RepoUsuario.instance
+	RepoOpinion opiniones = RepoOpinion.instance
+	RepoLog logs = RepoLog.instance
+
 	@Post("/favorito/:idPoi/:idUsuario")
 	def Result postFavorito() {
 		val usuario = usuarios.searchById(Long::parseLong(idUsuario))
@@ -54,24 +51,27 @@ class POIController {
 
 			opinion.poi = poi.nombre
 
-			opiniones.create(opinion)
+			opiniones.save(opinion)
 
 		} catch (Exception e) {
-			return badRequest(e.toJson)
+			badRequest(e.toJson)
 		}
 		return ok
 	}
 
-	@Get("/usuarios")
-	def Result getUsuarios() {
-		val usuarios = usuarios.allInstances
-		response.contentType = ContentType.APPLICATION_JSON
-		ok(usuarios.toJson)
+	@Get("/usuario")
+	def Result getUsuarios(String nombre, String contrasenia) {
+		val usuario = usuarios.getUsuario(nombre, contrasenia)
+
+		ok(usuario.toJson)
 	}
 
 	@Get("/usuario/:id")
 	def Result getUsuario() {
-		val usuario = usuarios.searchById(Long::parseLong(id))
+		val idUsuario = Long::parseLong(id)
+
+		val usuario = usuarios.searchById(idUsuario)
+
 		ok(usuario.toJson)
 	}
 
@@ -114,43 +114,4 @@ class POIController {
 		ok
 	}
 
-	def static void main(String[] args) {
-		if (pois.allInstances.nullOrEmpty) {
-			pois.cargaInicial
-		}
-
-		if (usuarios.allInstances.nullOrEmpty) {
-			usuarios.cargaInicial
-		}
-
-		if (opiniones.allInstances.nullOrEmpty) {
-			val usuarioTest = usuarios.allInstances.get(0)
-			val poiTest = pois.allInstances.get(0)
-
-			val opinion = new Opinion => [
-				calificacion = 5
-				comentario = "Mapea bien a MongoDB"
-				usuario = usuarioTest.nombre
-				poi = poiTest.nombre
-			]
-
-			opiniones.create(opinion)
-		}
-		
-		if (log.allInstances.nullOrEmpty) {
-			val usuarioTest = usuarios.allInstances.get(0)
-			
-			val l = new Log => [
-				fecha = 11/01/1985
-				hora = 21
-				usuario = usuarioTest.nombre
-				//usuario = usuarioTest.contrasenia
-				//usuario.nombre = usuarioTest.nombre
-				estado = estado
-			]
-			log.create(l)
-		}
-
-		XTRest.start(POIController, 9000)
-	}
 }

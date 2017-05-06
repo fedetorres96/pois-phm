@@ -1,4 +1,4 @@
-package repos
+package repos.mysql
 
 import creacionales.UsuarioBuilder
 import poi.Usuario
@@ -16,6 +16,10 @@ class RepoUsuario extends RepoMySQL<Usuario> {
 
 	override getEntityType() {
 		Usuario
+	}
+
+	def Usuario getUsuario(String _nombre, String _contrasenia) {
+		allInstances.findFirst[nombre.equals(_nombre) && contrasenia.equals(_contrasenia)]
 	}
 
 	def void cargaInicial() {
