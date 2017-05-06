@@ -13,15 +13,19 @@ import poi.Opinion
 import repos.RepoOpinion
 import repos.RepoPOI
 import repos.RepoUsuario
+import repos.RepoLog
+import poi.Log
 
 @Controller
 class POIController {
+	
 	extension JSONUtils = new JSONUtils
 
 	static RepoPOI pois = RepoPOI.instance
 	static RepoUsuario usuarios = RepoUsuario.instance
 	static RepoOpinion opiniones = RepoOpinion.instance
-
+	static RepoLog log = RepoLog.instance
+	
 	@Post("/favorito/:idPoi/:idUsuario")
 	def Result postFavorito() {
 		val usuario = usuarios.searchById(Long::parseLong(idUsuario))
@@ -131,6 +135,20 @@ class POIController {
 			]
 
 			opiniones.create(opinion)
+		}
+		
+		if (log.allInstances.nullOrEmpty) {
+			val usuarioTest = usuarios.allInstances.get(0)
+			
+			val l = new Log => [
+				fecha = 11/01/1985
+				hora = 21
+				usuario = usuarioTest.nombre
+				//usuario = usuarioTest.contrasenia
+				//usuario.nombre = usuarioTest.nombre
+				estado = estado
+			]
+			log.create(l)
 		}
 
 		XTRest.start(POIController, 9000)

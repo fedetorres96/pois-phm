@@ -6,6 +6,7 @@ import org.mongodb.morphia.Datastore
 import org.mongodb.morphia.Morphia
 import poi.Opinion
 import org.mongodb.morphia.query.UpdateOperations
+import poi.Log
 
 abstract class RepoMongoDB<T> {
 	
@@ -18,14 +19,14 @@ abstract class RepoMongoDB<T> {
 			
 			morphia = new Morphia => [
 				
-				map(Opinion)
-				//map(UsuarioMongo)
+				map(Opinion).
+				map(Log)
 				
 				ds = createDatastore(mongo, "local")
 				ds.ensureIndexes
 			]
 			
-			println("Conectado a MongoDB. Bases: " + ds.getDB.collectionNames)
+			println("Conectado a MongoDB. Bases en MongoDB: " + ds.getDB.collectionNames)
 		}
 	}
 	
