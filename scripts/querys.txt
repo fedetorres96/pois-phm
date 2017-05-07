@@ -10,6 +10,16 @@ var promedioCalificacion = function(poi, calificacion) {
 		return { promedio: Array.avg(calificacion) };
 };
 
-db.Opinion.mapReduce(calificacionesHechas ,promedioCalificacion, { out: "Promedio" });
+db.Opinion.mapReduce(calificacionesHechas ,promedioCalificacion, { out: "Promedio" }).find({"_id" : "Manin Hnos."});
 __________________________________________________________________________
-// Query Punto 2 
+// Query Punto 3 
+
+var calificacionesHechas = function() {
+           emit(this.usuario, this.calificacion)
+};
+
+var promedioCalificacion = function(usuario, calificacion) {
+		return { promedio: Array.avg(calificacion) };
+};
+
+db.Opinion.mapReduce(calificacionesHechas ,promedioCalificacion, { out: "Promedio" }).find({"_id" : "Mauro"});
