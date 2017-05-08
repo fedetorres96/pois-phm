@@ -16,4 +16,5 @@ class Log {
 	String usuario
 	
 	boolean exitoso
+	
 }
