@@ -12,6 +12,8 @@ import repos.mongodb.RepoLog
 import repos.mongodb.RepoOpinion
 import repos.mysql.RepoPOI
 import repos.mysql.RepoUsuario
+import poi.Log
+import org.joda.time.DateTime
 
 @Controller
 class POIController {
@@ -62,7 +64,12 @@ class POIController {
 	@Get("/usuario")
 	def Result getUsuarios(String nombre, String contrasenia) {
 		val usuario = usuarios.getUsuario(nombre, contrasenia)
-
+		val exito = usuario != null
+			logs.save(new Log() =>[
+				fechaHora = DateTime.now().toString
+				usuario = nombre
+				exitoso = exito
+			])
 		ok(usuario.toJson)
 	}
 
