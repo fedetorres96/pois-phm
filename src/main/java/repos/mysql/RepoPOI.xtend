@@ -19,7 +19,7 @@ class RepoPOI extends RepoMySQL<POI> {
 	override getEntityType() {
 		POI
 	}
-
+	
 	def searchByQuery(String query) {
 		allInstances.filter[coincideBusqueda(query) && habilitado].toList
 	}
@@ -103,23 +103,23 @@ class RepoPOI extends RepoMySQL<POI> {
 			"Lamadrid 335").servicio("Depositos").servicio("Extracciones").servicio("Prestamos").servicio(
 			"Banca Empresaria").servicio("Plazo Fijo").ubicacion(7, 8).build
 
-		saveOrUpdate(cgp11)
-		saveOrUpdate(cgp15)
-		saveOrUpdate(linea343)
-		saveOrUpdate(linea237)
-		saveOrUpdate(linea11)
-		saveOrUpdate(linea27)
-		saveOrUpdate(linea78)
-		saveOrUpdate(linea21)
-		saveOrUpdate(linea99)
-		saveOrUpdate(maninHnos)
-		saveOrUpdate(trigoDeOro)
-		saveOrUpdate(donRamon)
-		saveOrUpdate(loDePepe)
-		saveOrUpdate(nacionSanMartin)
-		saveOrUpdate(credicoopVillaLynch)
-		saveOrUpdate(provincia)
-		saveOrUpdate(galicia)
-		saveOrUpdate(santanderRio)
+		save(cgp11)
+		save(cgp15)
+		save(linea343)
+		save(linea237)
+		save(linea11)
+		save(linea27)
+		save(linea78)
+		save(linea21)
+		save(linea99)
+		save(maninHnos)
+		save(trigoDeOro)
+		save(donRamon)
+		save(loDePepe)
+		save(nacionSanMartin)
+		save(credicoopVillaLynch)
+		save(provincia)
+		save(galicia)
+		save(santanderRio)
 	}
 }

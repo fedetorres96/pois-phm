@@ -1,15 +1,15 @@
-package repos.mongodb
-
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import poi.Local
 import poi.Opinion
-
-import static org.mockito.Mockito.*
+import repos.mongodb.RepoOpinion
+import repos.mysql.RepoPOI
 
 class TestRepoOpinion {
 	RepoOpinion opiniones
+	RepoPOI pois
 	Opinion opinionFede;
 	Opinion opinionMauro;
 	Local mockLocal;
@@ -17,52 +17,59 @@ class TestRepoOpinion {
 	@Before
 	def void init() {
 		opiniones = RepoOpinion.instance
+		pois = RepoPOI.instance
 
-		mockLocal = mock(Local)
-		when(mockLocal.nombre).thenReturn("Mock Shop")
-		when(mockLocal.calificacion).thenCallRealMethod
-		when(mockLocal.listaOpiniones).thenCallRealMethod
+		mockLocal = new Local => [
+			nombre = "Mock Shop"
+			descripcion = ""
+		]
+
+		pois.save(mockLocal)
 
 		opinionFede = new Opinion() => [
 			calificacion = 3
 			comentario = "Este Local es un Mock"
-			usuario = "Fede"
-			poi = "Mock Shop"
+			poi = mockLocal
 		]
 
 		opinionMauro = new Opinion() => [
 			calificacion = 5
 			comentario = "Este Mock es una fiesta"
-			usuario = "Mauro"
-			poi = "Mock Shop"
+			poi = mockLocal
 		]
 
 	}
 
 	@Test
 	def void seAgreganOpinionesAlRepoOpinion() {
-		val nroOpiniones = opiniones.allInstances.size
+		val nroOpinionesAntes = opiniones.allInstances.size
 
 		opiniones.save(opinionFede)
 
-		val nroOpinionesAfter = opiniones.allInstances.size
+		val nroOpinionesDespues = opiniones.allInstances.size
 
-		Assert.assertEquals(nroOpiniones + 1, nroOpinionesAfter)
-
-		opiniones.delete(opinionFede)
+		Assert.assertEquals(nroOpinionesAntes + 1, nroOpinionesDespues)
 	}
 
 	@Test
 	def void seCalculaLaCalificacionPromedioCorrectamente() {
 		opiniones.save(opinionFede)
-		opiniones.save(opinionMauro)
 
-		val calificacion = mockLocal.calificacion
+		val nroOpinionesAntes = opiniones.allInstances.size
 
-		Assert.assertEquals(4, calificacion, 0)
+		opiniones.delete(opinionFede)
+				
+		val nroOpinionesDespues = opiniones.allInstances.size
+
+		Assert.assertEquals(nroOpinionesAntes - 1, nroOpinionesDespues)
+	}
+
+	@After
+	def void clean() {
+		pois.delete(mockLocal)
 
 		opiniones.delete(opinionFede)
 		opiniones.delete(opinionMauro)
-	}
 
+	}
 }

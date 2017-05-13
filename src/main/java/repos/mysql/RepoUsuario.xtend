@@ -29,11 +29,11 @@ class RepoUsuario extends RepoMySQL<Usuario> {
 		val javi = new UsuarioBuilder().nombre("Javi").contrasenia("123").ubicacion(2, 4).build
 		val mauro = new UsuarioBuilder().nombre("Mauro").contrasenia("123").ubicacion(2, 2).build
 
-		saveOrUpdate(ale)
-		saveOrUpdate(favio)
-		saveOrUpdate(fede)
-		saveOrUpdate(javi)
-		saveOrUpdate(mauro)
+		save(ale)
+		save(favio)
+		save(fede)
+		save(javi)
+		save(mauro)
 	}
 
 }

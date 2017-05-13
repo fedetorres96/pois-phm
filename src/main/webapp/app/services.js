@@ -29,8 +29,8 @@ app.service("poiService", function ($http) {
             .then(callback);
     };
 
-    this.addOpinion = function (poi, opinion, callback) {
-        $http.put('/opinion/' + poi.id, opinion)
+    this.addOpinion = function (poi, usuario ,opinion, callback) {
+        $http.put('/opinion/' + poi.id  + '/' + usuario.id , opinion)
             .then(callback);
     };
 

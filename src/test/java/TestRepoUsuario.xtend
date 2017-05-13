@@ -1,5 +1,3 @@
-package repos.mysql
-
 import creacionales.POIBuilder
 import creacionales.ServicioBuilder
 import creacionales.UsuarioBuilder
@@ -86,28 +84,28 @@ class TestRepoUsuario {
 
 	@Test
 	def void PoiEnFavorito(){
-		repoUsuario.saveOrUpdate(usuario)
+		repoUsuario.save(usuario)
 		
-		var javi = repoUsuario.searchById(usuario.id)
+		var javi = repoUsuario.getById(usuario.id)
 		
 		Assert.assertEquals(0, javi.listaFavoritos.size)
 	
 		javi.addFavorito(cgp11)
 		
-		repoUsuario.saveOrUpdate(javi)
+		repoUsuario.save(javi)
 		
-		javi = repoUsuario.searchById(usuario.id)
+		javi = repoUsuario.getById(usuario.id)
 		
 		Assert.assertEquals(1, javi.listaFavoritos.size)
 		
-		repoUsuario.DeleteById(javi.id)
+		repoUsuario.delete(javi)
 	}
 	
 	@Test
 	def void muchosPoiEnFavorito(){
-		repoUsuario.saveOrUpdate(usuario)
+		repoUsuario.save(usuario)
 	
-		var javi = repoUsuario.searchById(usuario.id) 
+		var javi = repoUsuario.getById(usuario.id) 
 		
 		Assert.assertEquals(0, javi.listaFavoritos.size)
 		
@@ -117,13 +115,13 @@ class TestRepoUsuario {
 		javi.addFavorito(nacionSanMartin)
 		javi.addFavorito(cgp11)
 		
-		repoUsuario.saveOrUpdate(javi)
+		repoUsuario.save(javi)
 		
-		javi = repoUsuario.searchById(usuario.id)
+		javi = repoUsuario.getById(usuario.id)
 		
 		Assert.assertEquals(5, javi.listaFavoritos.size)
 		
-		repoUsuario.DeleteById(javi.id)
+		repoUsuario.delete(javi)
 		
 	}
 }

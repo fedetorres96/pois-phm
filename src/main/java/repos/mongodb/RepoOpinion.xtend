@@ -1,8 +1,6 @@
 package repos.mongodb
 
-import java.util.List
 import poi.Opinion
-import poi.POI
 
 class RepoOpinion extends RepoMongoDB<Opinion> {
 
@@ -18,9 +16,4 @@ class RepoOpinion extends RepoMongoDB<Opinion> {
 	override getEntityType() {
 		Opinion
 	}
-
-	def List<Opinion> getOpiniones(POI poi) {
-		ds.createQuery(entityType).field("poi").equal(poi.nombre).asList
-	}
-
 }

@@ -80,13 +80,13 @@ app.controller('detalleController', function ($stateParams, poiService, usuarioS
     };
 
     this.getOpinion = function () {
-        return new Opinion(this.usuario, this.calificacion, this.textoComentario);
+        return new Opinion(this.calificacion, this.textoComentario);
     };
 
     this.addOpinion = function () {
         var self = this;
         
-        poiService.addOpinion(self.poi, self.getOpinion(), function (response) {
+        poiService.addOpinion(self.poi, self.usuario, self.getOpinion(), function (response) {
             self.getPoi();
         });
     };

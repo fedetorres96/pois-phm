@@ -1,13 +1,13 @@
 package repos.mongodb
 
 import com.mongodb.MongoClient
-import java.util.List
 import org.mongodb.morphia.Datastore
 import org.mongodb.morphia.Morphia
 import poi.Log
 import poi.Opinion
+import repos.Repo
 
-abstract class RepoMongoDB<T> {
+abstract class RepoMongoDB<T> implements Repo<T>{
 	
 	static protected Datastore ds
 	static Morphia morphia
@@ -29,17 +29,16 @@ abstract class RepoMongoDB<T> {
 		}
 	}
 	
-	def void save(T t) {
+	override save(T t) {
 		ds.save(t)
 	}
 	
-	def void delete(T t) {
+	override delete(T t) {
 		ds.delete(t)
 	}
 
-	def List<T> allInstances() {
+	override allInstances() {
 		ds.createQuery(entityType).asList
 	}
 
-	def Class<T> getEntityType()
 }

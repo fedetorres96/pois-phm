@@ -10,7 +10,7 @@ import javax.persistence.Inheritance
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.joda.time.DateTime
 import poi.utils.Punto
-import repos.mongodb.RepoOpinion
+import repos.mysql.RepoOpinionMySQL
 
 @Accessors
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -48,7 +48,7 @@ abstract class POI {
 	}
 	
 	def List<Opinion> getListaOpiniones() {
-		RepoOpinion.instance.getOpiniones(this)
+		RepoOpinionMySQL.instance.getOpiniones(this)
 	}
 	
 	def double getCalificacion(){

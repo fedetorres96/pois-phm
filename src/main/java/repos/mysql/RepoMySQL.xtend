@@ -1,6 +1,5 @@
 package repos.mysql
 
-import java.util.List
 import org.hibernate.HibernateException
 import org.hibernate.Session
 import org.hibernate.SessionFactory
@@ -16,8 +15,10 @@ import poi.Usuario
 import poi.utils.Punto
 import poi.utils.RangoHorario
 import poi.utils.Servicio
+import repos.Repo
+import poi.Opinion
 
-abstract class RepoMySQL<T> {
+abstract class RepoMySQL<T> implements Repo<T> {
 
 	private static final SessionFactory sessionFactory = new Configuration()
 		.configure()
@@ -30,20 +31,20 @@ abstract class RepoMySQL<T> {
 		.addAnnotatedClass(Colectivo)
 		.addAnnotatedClass(Local)
 		.addAnnotatedClass(Usuario)
+		.addAnnotatedClass(Opinion)
 		.addAnnotatedClass(RangoHorario)
 		.buildSessionFactory()
 
-	def List<T> allInstances() {
+	override allInstances() {
 		val session = openSession
 		try {
-			
-			session.createCriteria(getEntityType).list()
+			session.createCriteria(entityType).list()
 		} finally {
 			session.close
 		}
 	}
 	
-	def T searchById(Long id) {
+	def T getById(Long id) {
         val session = openSession
         try {
             session.createCriteria(entityType)
@@ -56,7 +57,7 @@ abstract class RepoMySQL<T> {
         }
     }
 
-	def void saveOrUpdate(T t) {
+	override save(T t) {
 		val session = openSession
 		try {
 			session.beginTransaction
@@ -70,12 +71,11 @@ abstract class RepoMySQL<T> {
 		}
 	}
 	
-	def void DeleteById(long id) {
-		var entity = searchById(id)
+	override delete(T t) {
 		val session = openSession
 		try {
 			session.beginTransaction
-			session.delete(entity)
+			session.delete(t)
 			session.getTransaction.commit
 		} catch (HibernateException e) {
 			session.getTransaction.rollback
@@ -85,8 +85,6 @@ abstract class RepoMySQL<T> {
 		}
 	}
 	
-	def Class<T> getEntityType()
-
 	def Session openSession() {
 		sessionFactory.openSession
 	}
