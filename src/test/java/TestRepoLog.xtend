@@ -1,4 +1,4 @@
-import org.joda.time.DateTime
+import java.util.Date
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -30,9 +30,9 @@ class TestRepoLog{
 		usuarios.save(usuario)
 		
 		log = new Log()
-		log.usuario = usuario
+		log.usuario = usuario.nombre
 		log.exitoso =  true
-		log.fechaHora = DateTime.now.toString	
+		log.fechaHora = new Date()
 
 	}
 	

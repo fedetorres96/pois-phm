@@ -1,5 +1,7 @@
 package webapp
 
+import java.util.Date
+import java.util.List
 import org.uqbar.xtrest.api.Result
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
@@ -7,16 +9,14 @@ import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.api.annotation.Post
 import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
+import poi.Log
 import poi.Opinion
+import repos.Repo
 import repos.mongodb.RepoLog
 import repos.mongodb.RepoOpinion
+import repos.mysql.RepoOpinionMySQL
 import repos.mysql.RepoPOI
 import repos.mysql.RepoUsuario
-import poi.Log
-import org.joda.time.DateTime
-import java.util.List
-import repos.Repo
-import repos.mysql.RepoOpinionMySQL
 
 @Controller
 class POIController {
@@ -73,8 +73,8 @@ class POIController {
 		val exito = usuarioDB != null
 
 		val log = new Log() => [
-			fechaHora = DateTime.now().toString
-			usuario = usuarioDB
+			fechaHora = new Date()
+			usuario = nombre
 			exitoso = exito
 		]
 		
