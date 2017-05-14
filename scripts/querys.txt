@@ -12,6 +12,20 @@ var promedioCalificacion = function(poi, calificacion) {
 
 db.Opinion.mapReduce(calificacionesHechas ,promedioCalificacion, { out: "Promedio" }).find({"_id" : "Manin Hnos."});
 __________________________________________________________________________
+// Query Punto 2 
+
+var calificacionMayorCinco = function() {
+	if(this.calificacion == 5) {
+           emit(this.poi, this.comentario)
+	}
+};
+
+var comentarios = function(poi, comentario) {
+		return { comentarios: Array.join(comentario) };
+};
+
+db.Opinion.mapReduce(calificacionMayorCinco ,comentarios, { out: "Comentarios" });
+___________________________________________________________________________
 // Query Punto 3 
 
 var calificacionesHechas = function() {
