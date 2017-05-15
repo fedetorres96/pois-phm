@@ -1,9 +1,9 @@
 package morphia.utils
 
-import poi.POI
-import org.mongodb.morphia.converters.TypeConverter
 import com.mongodb.BasicDBObject
+import org.mongodb.morphia.converters.TypeConverter
 import org.mongodb.morphia.mapping.MappedField
+import poi.POI
 import repos.mysql.RepoPOI
 
 class POIConverter extends TypeConverter {
@@ -17,7 +17,7 @@ class POIConverter extends TypeConverter {
 
 		val id = dbObject.getLong("id")
 
-		RepoPOI.instance.getById(id)
+		return RepoPOI.instance.getById(id)
 	}
 
 	override encode(Object value, MappedField optionalExtraInfo) {

@@ -30,7 +30,7 @@ abstract class POI {
 	
 	@Column
 	boolean habilitado
-
+	
 	def boolean estaCerca(Punto coordenada)
 
 	def boolean coincideBusqueda(String string)

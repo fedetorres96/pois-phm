@@ -34,7 +34,7 @@ class Usuario {
 	Punto ubicacion
 
 	@JsonIgnore
-	@ManyToMany(cascade=ALL)
+	@ManyToMany(cascade=MERGE)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	List<POI> listaFavoritos = newArrayList
 
